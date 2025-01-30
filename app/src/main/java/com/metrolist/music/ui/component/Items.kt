@@ -516,7 +516,7 @@ fun SongGridItem(
             contentDescription = null,
             modifier =
             Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(ThumbnailCornerRadius)),
         )
 
@@ -591,7 +591,7 @@ fun SongSmallGridItem(
             contentDescription = null,
             modifier =
             Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(ThumbnailCornerRadius)),
         )
 
@@ -1236,7 +1236,7 @@ fun PlaylistGridItem(
                     contentDescription = null,
                     modifier =
                     Modifier
-                        .size(width)
+                        .fillMaxWidth()
                         .clip(RoundedCornerShape(ThumbnailCornerRadius)),
                 )
 
@@ -1312,7 +1312,7 @@ fun MediaMetadataListItem(
                 contentDescription = null,
                 modifier =
                 Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .clip(RoundedCornerShape(ThumbnailCornerRadius)),
             )
 
@@ -1608,7 +1608,7 @@ fun YouTubeGridItem(
             AsyncImage(
                 model = item.thumbnail,
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxWidth(),
             )
 
             androidx.compose.animation.AnimatedVisibility(
@@ -1778,7 +1778,7 @@ fun YouTubeSmallGridItem(
         AsyncImage(
             model = item.thumbnail,
             contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
         )
         if (item is SongItem) {
             AnimatedVisibility(
@@ -1864,7 +1864,7 @@ fun LocalItemsGrid(
         AsyncImage(
             model = thumbnailUrl,
             contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
         )
 
         AnimatedVisibility(
