@@ -1599,15 +1599,8 @@ fun YouTubeGridItem(
         },
     ) {
         Box(
-            contentAlignment =
-                Alignment.Center,
-            modifier =
-            if (fillMaxWidth) {
-                Modifier.fillMaxWidth()
-            } else {
-                Modifier.height(GridThumbnailHeight)
-            }.aspectRatio(thumbnailRatio)
-                .clip(thumbnailShape),
+            contentAlignment = Alignment.Center,
+            modifier = modifier
         ) {
             AsyncImage(
                 model = item.thumbnail,
