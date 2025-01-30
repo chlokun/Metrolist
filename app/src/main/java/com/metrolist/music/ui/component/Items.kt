@@ -1599,6 +1599,8 @@ fun YouTubeGridItem(
         },
     ) {
         Box(
+            contentAlignment =
+                Alignment.Center,
             modifier =
             if (fillMaxWidth) {
                 Modifier.fillMaxWidth()
