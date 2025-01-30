@@ -1668,6 +1668,30 @@ fun YouTubeGridItem(
             }
 
             androidx.compose.animation.AnimatedVisibility(
+                visible = isActive,
+                enter = fadeIn(tween(500)),
+                exit = fadeOut(tween(500)),
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .background(
+                            color = Color.Black.copy(alpha = if (isPlaying) 0.4f else 0f),
+                            shape = thumbnailShape,
+                        ),
+                ) {
+                    if (isPlaying) {
+                        PlayingIndicator(
+                            color = Color.White,
+                            modifier = Modifier.height(24.dp),
+                        )
+                    }
+                }
+            }
+
+            androidx.compose.animation.AnimatedVisibility(
                 visible = item is SongItem && !isActive && !isPlaying,
                 enter = fadeIn(),
                 exit = fadeOut(),
@@ -1689,36 +1713,6 @@ fun YouTubeGridItem(
                         contentDescription = null,
                         tint = Color.White,
                     )
-                }
-            }
-
-            androidx.compose.animation.AnimatedVisibility(
-                visible = isActive,
-                enter = fadeIn(tween(500)),
-                exit = fadeOut(tween(500)),
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .background(
-                            color = Color.Black.copy(alpha = 0.4f),
-                            shape = thumbnailShape,
-                        ),
-                ) {
-                    if (isPlaying) {
-                        PlayingIndicator(
-                            color = Color.White,
-                            modifier = Modifier.height(24.dp),
-                        )
-                    } else {
-                        Icon(
-                            painter = painterResource(R.drawable.play),
-                            contentDescription = null,
-                            tint = Color.White,
-                        )
-                    }
                 }
             }
         }
