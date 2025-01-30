@@ -1692,7 +1692,7 @@ fun YouTubeGridItem(
             }
 
             androidx.compose.animation.AnimatedVisibility(
-                visible = item is SongItem && !isActive && !isPlaying,
+                visible = !(isActive && isPlaying),
                 enter = fadeIn(),
                 exit = fadeOut(),
                 modifier =
