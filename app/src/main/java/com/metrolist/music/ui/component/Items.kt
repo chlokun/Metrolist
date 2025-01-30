@@ -1612,36 +1612,6 @@ fun YouTubeGridItem(
             )
 
             androidx.compose.animation.AnimatedVisibility(
-                visible = isActive,
-                enter = fadeIn(tween(500)),
-                exit = fadeOut(tween(500)),
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .background(
-                            color = Color.Black.copy(alpha = 0.4f),
-                            shape = thumbnailShape,
-                        ),
-                ) {
-                    if (isPlaying) {
-                        PlayingIndicator(
-                            color = Color.White,
-                            modifier = Modifier.height(24.dp),
-                        )
-                    } else {
-                        Icon(
-                            painter = painterResource(R.drawable.play),
-                            contentDescription = null,
-                            tint = Color.White,
-                        )
-                    }
-                }
-            }
-
-            androidx.compose.animation.AnimatedVisibility(
                 visible = item is AlbumItem && !isActive,
                 enter = fadeIn(),
                 exit = fadeOut(),
@@ -1694,6 +1664,61 @@ fun YouTubeGridItem(
                         contentDescription = null,
                         tint = Color.White,
                     )
+                }
+            }
+
+            androidx.compose.animation.AnimatedVisibility(
+                visible = item is SongItem && !isActive && !isPlaying,
+                enter = fadeIn(),
+                exit = fadeOut(),
+                modifier =
+                Modifier
+                    .align(Alignment.Center)
+                    .padding(8.dp),
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier =
+                    Modifier
+                        .size(36.dp)
+                        .clip(CircleShape)
+                        .background(Color.Black.copy(alpha = 0.6f)),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.play),
+                        contentDescription = null,
+                        tint = Color.White,
+                    )
+                }
+            }
+
+            androidx.compose.animation.AnimatedVisibility(
+                visible = isActive,
+                enter = fadeIn(tween(500)),
+                exit = fadeOut(tween(500)),
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .background(
+                            color = Color.Black.copy(alpha = 0.4f),
+                            shape = thumbnailShape,
+                        ),
+                ) {
+                    if (isPlaying) {
+                        PlayingIndicator(
+                            color = Color.White,
+                            modifier = Modifier.height(24.dp),
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(R.drawable.play),
+                            contentDescription = null,
+                            tint = Color.White,
+                        )
+                    }
                 }
             }
         }
