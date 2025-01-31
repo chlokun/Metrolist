@@ -1882,7 +1882,6 @@ fun LocalItemsGrid(
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            // Show play icon for songs only
             if (SongItem) {
                 AnimatedVisibility(
                     visible = !(isActive && isPlaying),
@@ -1898,58 +1897,6 @@ fun LocalItemsGrid(
                             .size(36.dp)
                             .clip(CircleShape)
                             .background(Color.Black.copy(alpha = 0.6f)),
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.play),
-                            contentDescription = null,
-                            tint = Color.White,
-                        )
-                    }
-                }
-            }
-
-            // Show play icon at the bottom right for albums
-            if (AlbumItem) {
-                AnimatedVisibility(
-                    visible = !isActive,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(8.dp),
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .size(36.dp)
-                            .clip(CircleShape)
-                            .background(Color.Black.copy(alpha = 0.4f))
-                            .clickable {
-                                // Handle play action for albums
-                                var playlistId = ""
-                                coroutineScope?.launch(Dispatchers.IO) {
-                                    var albumWithSongs = database.albumWithSongs(item.id).first()
-                                    if (albumWithSongs?.songs.isNullOrEmpty()) {
-                                        YouTube
-                                            .album(item.id)
-                                            .onSuccess { albumPage ->
-                                                playlistId = albumPage.album.playlistId
-                                                database.transaction {
-                                                    insert(albumPage)
-                                                }
-                                                albumWithSongs = database.albumWithSongs(item.id).first()
-                                            }.onFailure {
-                                                reportException(it)
-                                            }
-                                    }
-                                    albumWithSongs?.let {
-                                        withContext(Dispatchers.Main) {
-                                            playerConnection.service.getAutomix(playlistId)
-                                            playerConnection.playQueue(LocalAlbumRadio(it))
-                                        }
-                                    }
-                                }
-                            },
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.play),
