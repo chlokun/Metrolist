@@ -203,7 +203,7 @@ fun OnlinePlaylistScreen(
                                         contentDescription = null,
                                         modifier =
                                         Modifier
-                                            .size(AlbumThumbnailSize)
+                                            .fillMaxWidth()
                                             .clip(RoundedCornerShape(ThumbnailCornerRadius)),
                                     )
 
