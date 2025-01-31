@@ -1856,10 +1856,12 @@ fun YouTubeSmallGridItem(
 )
 
 @Composable
-fun LocalItemsGrid(
+fun LocalSongsGrid(
     title: String,
     subtitle: String,
-    badges: @Composable (RowScope.() -> Unit) = {},
+    badges:
+    @Composable()
+    (RowScope.() -> Unit) = {},
     thumbnailUrl: String?,
     isActive: Boolean = false,
     isPlaying: Boolean = false,
@@ -1882,22 +1884,27 @@ fun LocalItemsGrid(
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            if (SongItem) {
-                AnimatedVisibility(
-                    visible = !(isActive && isPlaying),
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(8.dp),
+            AnimatedVisibility(
+                visible = isActive,
+                enter = fadeIn(tween(500)),
+                exit = fadeOut(tween(500)),
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .background(
+                            color = Color.Black.copy(alpha = 0.4f),
+                            shape = RoundedCornerShape(ThumbnailCornerRadius),
+                        ),
                 ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .size(36.dp)
-                            .clip(CircleShape)
-                            .background(Color.Black.copy(alpha = 0.6f)),
-                    ) {
+                    if (isPlaying) {
+                        PlayingIndicator(
+                            color = Color.White,
+                            modifier = Modifier.height(24.dp),
+                        )
+                    } else {
                         Icon(
                             painter = painterResource(R.drawable.play),
                             contentDescription = null,
@@ -1908,25 +1915,27 @@ fun LocalItemsGrid(
             }
 
             AnimatedVisibility(
-                visible = isActive,
-                enter = fadeIn(tween(500)),
-                exit = fadeOut(tween(500)),
+                visible = !(isActive && isPlaying),
+                enter = fadeIn(),
+                exit = fadeOut(),
+                modifier =
+                Modifier
+                    .align(Alignment.Center)
+                    .padding(8.dp),
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            color = Color.Black.copy(alpha = if (isPlaying) 0.4f else 0f),
-                            shape = RoundedCornerShape(ThumbnailCornerRadius),
-                        ),
+                    modifier =
+                    Modifier
+                        .size(36.dp)
+                        .clip(CircleShape)
+                        .background(Color.Black.copy(alpha = 0.6f)),
                 ) {
-                    if (isPlaying) {
-                        PlayingIndicator(
-                            color = Color.White,
-                            modifier = Modifier.height(24.dp),
-                        )
-                    }
+                    Icon(
+                        painter = painterResource(R.drawable.play),
+                        contentDescription = null,
+                        tint = Color.White,
+                    )
                 }
             }
         }
@@ -1937,7 +1946,7 @@ fun LocalItemsGrid(
 )
 
 @Composable
-fun CircularItemsGrid(
+fun LocalArtistsGrid(
     title: String,
     subtitle: String,
     badges:
@@ -2000,3 +2009,62 @@ fun CircularItemsGrid(
     fillMaxWidth = fillMaxWidth,
     modifier = modifier,
 )
+
+@Composable
+fun LocalAlbumsGrid(
+    title: String,
+    subtitle: String,
+    badges:
+    @Composable()
+    (RowScope.() -> Unit) = {},
+    thumbnailUrl: String?,
+    isActive: Boolean = false,
+    isPlaying: Boolean = false,
+    fillMaxWidth: Boolean = false,
+    modifier: Modifier,
+) = GridItem(
+    title = title,
+    subtitle = subtitle,
+    badges = badges,
+    thumbnailContent = {
+        AsyncImage(
+            model = thumbnailUrl,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+        )
+
+        AnimatedVisibility(
+            visible = isActive,
+            enter = fadeIn(tween(500)),
+            exit = fadeOut(tween(500)),
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(
+                        color = Color.Black.copy(alpha = 0.4f),
+                        shape = RoundedCornerShape(ThumbnailCornerRadius),
+                    ),
+            ) {
+                if (isPlaying) {
+                    PlayingIndicator(
+                        color = Color.White,
+                        modifier = Modifier.height(24.dp),
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(R.drawable.play),
+                        contentDescription = null,
+                        tint = Color.White,
+                    )
+                }
+            }
+        }
+    },
+    thumbnailShape = RoundedCornerShape(ThumbnailCornerRadius),
+    fillMaxWidth = fillMaxWidth,
+    modifier = modifier,
+)
+
