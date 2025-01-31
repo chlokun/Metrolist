@@ -1859,9 +1859,7 @@ fun YouTubeSmallGridItem(
 fun LocalItemsGrid(
     title: String,
     subtitle: String,
-    badges:
-    @Composable()
-    (RowScope.() -> Unit) = {},
+    badges: @Composable (RowScope.() -> Unit) = {},
     thumbnailUrl: String?,
     isActive: Boolean = false,
     isPlaying: Boolean = false,
@@ -1884,27 +1882,75 @@ fun LocalItemsGrid(
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            AnimatedVisibility(
-                visible = isActive,
-                enter = fadeIn(tween(500)),
-                exit = fadeOut(tween(500)),
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .background(
-                            color = Color.Black.copy(alpha = 0.4f),
-                            shape = RoundedCornerShape(ThumbnailCornerRadius),
-                        ),
+            // Show play icon for songs only
+            if (item is SongItem) {
+                AnimatedVisibility(
+                    visible = !(isActive && isPlaying),
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(8.dp),
                 ) {
-                    if (isPlaying) {
-                        PlayingIndicator(
-                            color = Color.White,
-                            modifier = Modifier.height(24.dp),
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(CircleShape)
+                            .background(Color.Black.copy(alpha = 0.6f)),
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.play),
+                            contentDescription = null,
+                            tint = Color.White,
                         )
-                    } else {
+                    }
+                }
+            }
+
+            // Show play icon at the bottom right for albums
+            if (item is AlbumItem) {
+                AnimatedVisibility(
+                    visible = !isActive,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(8.dp),
+                ) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(CircleShape)
+                            .background(Color.Black.copy(alpha = 0.4f))
+                            .clickable {
+                                // Handle play action for albums
+                                var playlistId = ""
+                                coroutineScope?.launch(Dispatchers.IO) {
+                                    var albumWithSongs = database.albumWithSongs(item.id).first()
+                                    if (albumWithSongs?.songs.isNullOrEmpty()) {
+                                        YouTube
+                                            .album(item.id)
+                                            .onSuccess { albumPage ->
+                                                playlistId = albumPage.album.playlistId
+                                                database.transaction {
+                                                    insert(albumPage)
+                                                }
+                                                albumWithSongs = database.albumWithSongs(item.id).first()
+                                            }.onFailure {
+                                                reportException(it)
+                                            }
+                                    }
+                                    albumWithSongs?.let {
+                                        withContext(Dispatchers.Main) {
+                                            playerConnection.service.getAutomix(playlistId)
+                                            playerConnection.playQueue(LocalAlbumRadio(it))
+                                        }
+                                    }
+                                }
+                            },
+                    ) {
                         Icon(
                             painter = painterResource(R.drawable.play),
                             contentDescription = null,
@@ -1915,27 +1961,25 @@ fun LocalItemsGrid(
             }
 
             AnimatedVisibility(
-                visible = !(isActive && isPlaying),
-                enter = fadeIn(),
-                exit = fadeOut(),
-                modifier =
-                Modifier
-                    .align(Alignment.Center)
-                    .padding(8.dp),
+                visible = isActive,
+                enter = fadeIn(tween(500)),
+                exit = fadeOut(tween(500)),
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
-                    modifier =
-                    Modifier
-                        .size(36.dp)
-                        .clip(CircleShape)
-                        .background(Color.Black.copy(alpha = 0.6f)),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            color = Color.Black.copy(alpha = if (isPlaying) 0.4f else 0f),
+                            shape = RoundedCornerShape(ThumbnailCornerRadius),
+                        ),
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.play),
-                        contentDescription = null,
-                        tint = Color.White,
-                    )
+                    if (isPlaying) {
+                        PlayingIndicator(
+                            color = Color.White,
+                            modifier = Modifier.height(24.dp),
+                        )
+                    }
                 }
             }
         }
@@ -1944,7 +1988,6 @@ fun LocalItemsGrid(
     fillMaxWidth = fillMaxWidth,
     modifier = modifier,
 )
-
 @Composable
 fun CircularItemsGrid(
     title: String,
