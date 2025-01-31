@@ -941,7 +941,7 @@ fun LocalPlaylistHeader(
                         model = playlist.thumbnails[0],
                         contentDescription = null,
                         modifier = Modifier
-                            .fillMaxSize()
+                            .fillMaxWidth()
                             .clip(RoundedCornerShape(ThumbnailCornerRadius)),
                     )
                 }
@@ -966,8 +966,9 @@ fun LocalPlaylistHeader(
                             AsyncImage(
                                 model = playlist.thumbnails.getOrNull(index),
                                 contentDescription = null,
+                                contentScale = ContentScale.Crop,
                                 modifier = Modifier
-                                    .fillMaxSize()
+                                    .fillMaxWidth()
                                     .clip(RoundedCornerShape(ThumbnailCornerRadius)),
                             )
                         }
