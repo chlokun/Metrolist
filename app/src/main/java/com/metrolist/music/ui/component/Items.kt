@@ -1911,6 +1911,31 @@ fun LocalItemsGrid(
                     }
                 }
             }
+
+            AnimatedVisibility(
+                visible = item is SongItem && !(isActive && isPlaying),
+                enter = fadeIn(),
+                exit = fadeOut(),
+                modifier =
+                Modifier
+                    .align(Alignment.Center)
+                    .padding(8.dp),
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier =
+                    Modifier
+                        .size(36.dp)
+                        .clip(CircleShape)
+                        .background(Color.Black.copy(alpha = 0.6f)),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.play),
+                        contentDescription = null,
+                        tint = Color.White,
+                    )
+                }
+            }
         }
     },
     thumbnailShape = RoundedCornerShape(ThumbnailCornerRadius),
