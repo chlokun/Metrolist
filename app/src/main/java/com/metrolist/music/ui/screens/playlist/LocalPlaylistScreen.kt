@@ -931,19 +931,24 @@ fun LocalPlaylistHeader(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (playlist.thumbnails.size == 1) {
-                AsyncImage(
-                    model = playlist.thumbnails[0],
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier =
-                    Modifier
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
                         .size(AlbumThumbnailSize)
                         .clip(RoundedCornerShape(ThumbnailCornerRadius)),
-                )
+                ) {
+                    AsyncImage(
+                        model = playlist.thumbnails[0],
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(ThumbnailCornerRadius)),
+                    )
+                }
             } else if (playlist.thumbnails.size > 1) {
                 Box(
-                    modifier =
-                    Modifier
+                    modifier = Modifier
                         .size(AlbumThumbnailSize)
                         .clip(RoundedCornerShape(ThumbnailCornerRadius)),
                 ) {
@@ -953,15 +958,21 @@ fun LocalPlaylistHeader(
                         Alignment.BottomStart,
                         Alignment.BottomEnd,
                     ).fastForEachIndexed { index, alignment ->
-                        AsyncImage(
-                            model = playlist.thumbnails.getOrNull(index),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier =
-                            Modifier
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
                                 .align(alignment)
                                 .size(AlbumThumbnailSize / 2),
-                        )
+                        ) {
+                            AsyncImage(
+                                model = playlist.thumbnails.getOrNull(index),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(RoundedCornerShape(ThumbnailCornerRadius)),
+                            )
+                        }
                     }
                 }
             }
