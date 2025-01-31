@@ -968,7 +968,7 @@ fun LocalPlaylistHeader(
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
-                                    .fillMaxWidth()
+                                    .fillMaxSize()
                                     .clip(RoundedCornerShape(ThumbnailCornerRadius)),
                             )
                         }
