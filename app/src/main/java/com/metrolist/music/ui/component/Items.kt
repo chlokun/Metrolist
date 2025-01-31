@@ -1913,7 +1913,7 @@ fun LocalItemsGrid(
             }
 
             AnimatedVisibility(
-                visible = item is SongItem && !(isActive && isPlaying),
+                visible = !(isActive && isPlaying),
                 enter = fadeIn(),
                 exit = fadeOut(),
                 modifier =
