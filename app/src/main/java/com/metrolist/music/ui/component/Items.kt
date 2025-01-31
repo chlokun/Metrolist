@@ -402,6 +402,7 @@ fun SongListItem(
             } else {
                 if (isSelected) {
                     Box(
+                        contentAlignment = Alignment.Center,
                         modifier =
                         Modifier
                             .fillMaxSize()
@@ -421,7 +422,7 @@ fun SongListItem(
                     contentDescription = null,
                     modifier =
                     Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .clip(RoundedCornerShape(ThumbnailCornerRadius)),
                 )
             }
@@ -1455,6 +1456,7 @@ fun YouTubeListItem(
             } else {
                 if (isSelected) {
                     Box(
+                        contentAlignment = Alignment.Center,
                         modifier =
                         Modifier
                             .fillMaxSize()
@@ -1474,7 +1476,7 @@ fun YouTubeListItem(
                     contentDescription = null,
                     modifier =
                     Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .clip(thumbnailShape),
                 )
             }
@@ -1587,8 +1589,6 @@ fun YouTubeGridItem(
     val thumbnailRatio = thumbnailRatio
 
     Column(
-        contentAlignment =
-            Alignment.Center,
         modifier =
         if (fillMaxWidth) {
             modifier
@@ -1601,12 +1601,11 @@ fun YouTubeGridItem(
         },
     ) {
         Box(
+            contentAlignment = Alignment.Center,
             modifier =
-            if (fillMaxWidth) {
-                Modifier.fillMaxWidth()
-            } else {
-                Modifier.height(GridThumbnailHeight)
-            }.aspectRatio(thumbnailRatio)
+            Modifier
+                .height(GridThumbnailHeight)
+                .aspectRatio(thumbnailRatio)
                 .clip(thumbnailShape),
         ) {
             AsyncImage(
