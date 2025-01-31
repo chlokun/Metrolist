@@ -1611,7 +1611,10 @@ fun YouTubeGridItem(
             AsyncImage(
                 model = item.thumbnail,
                 contentDescription = null,
-                modifier = Modifier.fillMaxWidth(),
+                modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(ThumbnailCornerRadius)),
             )
 
             androidx.compose.animation.AnimatedVisibility(
@@ -1781,7 +1784,10 @@ fun YouTubeSmallGridItem(
         AsyncImage(
             model = item.thumbnail,
             contentDescription = null,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = 
+            Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(ThumbnailCornerRadius)),
         )
         if (item is SongItem) {
             AnimatedVisibility(
