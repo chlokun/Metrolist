@@ -272,8 +272,9 @@ fun AutoPlaylistScreen(
                                         contentDescription = null,
                                         modifier =
                                         Modifier
-                                            .fillMaxWidth()
-                                            .clip(RoundedCornerShape(ThumbnailCornerRadius)),
+                                            .size(AlbumThumbnailSize)
+                                            .clip(RoundedCornerShape(ThumbnailCornerRadius))
+                                            .fillMaxWidth(),
                                     )
 
                                     Column(
