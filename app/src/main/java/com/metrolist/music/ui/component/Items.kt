@@ -1586,9 +1586,21 @@ fun YouTubeGridItem(
         if (item is ArtistItem) CircleShape else RoundedCornerShape(ThumbnailCornerRadius)
     val thumbnailRatio = thumbnailRatio
 
+    Column(
+        contentAlignment =
+            Alignment.Center,
+        modifier =
+        if (fillMaxWidth) {
+            modifier
+                .padding(12.dp)
+                .fillMaxWidth()
+        } else {
+            modifier
+                .padding(12.dp)
+                .width(GridThumbnailHeight * thumbnailRatio)
+        },
+    ) {
         Box(
-            contentAlignment =
-                Alignment.Center,
             modifier =
             if (fillMaxWidth) {
                 Modifier.fillMaxWidth()
@@ -1753,6 +1765,7 @@ fun YouTubeGridItem(
                 )
             }
         }
+    }
 }
 
 @Composable
